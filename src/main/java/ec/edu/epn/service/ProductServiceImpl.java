@@ -2,6 +2,7 @@ package ec.edu.epn.service;
 
 import ec.edu.epn.model.Product;
 import ec.edu.epn.repository.ProductRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +19,10 @@ public class ProductServiceImpl implements ProductService {
     public Product findBySku(String sku) {
         Optional<Product> product = productRepository.findBySku(sku);
         return product.orElseThrow(() -> new RuntimeException("Product not found with SKU: " + sku));
+    }
+
+    @Override
+    public List<Product> findActiveProducts() {
+        return productRepository.findByActiveTrue();
     }
 }
