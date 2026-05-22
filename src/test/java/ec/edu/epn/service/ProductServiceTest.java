@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -52,5 +53,32 @@ class ProductServiceTest {
         when(productRepository.findBySku(sku)).thenReturn(Optional.empty());
 
         assertThrows(RuntimeException.class, () -> productService.findBySku(sku));
+    }
+
+    @Test
+    @DisplayName("findActiveProducts: should return list of active products")
+    void findActiveProducts_ShouldReturnListOfActiveProducts() {
+        Product product1 = new Product();
+        product1.setSku("SKU-001");
+        product1.setName("Laptop");
+        product1.setStock(10);
+        product1.setActive(true);
+
+        Product product2 = new Product();
+        product2.setSku("SKU-002");
+        product2.setName("Mouse");
+        product2.setStock(25);
+        product2.setActive(true);
+
+        List<Product> activeProducts = List.of(product1, product2);
+
+        when(productRepository.findByActiveTrue()).thenReturn(activeProducts);
+
+        List<Product> result = productService.findActiveProducts();
+
+        assertFalse(result.isEmpty());
+        assertEquals(2, result.size());
+        assertNotNull(result.get(0));
+        assertNotNull(result.get(1));
     }
 }
