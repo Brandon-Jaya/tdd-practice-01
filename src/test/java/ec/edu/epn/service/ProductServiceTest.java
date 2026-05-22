@@ -23,7 +23,7 @@ class ProductServiceTest {
     private ProductRepository productRepository;
 
     @InjectMocks
-    private ProductService productService;
+    private ProductServiceImpl productService;
 
     @Test
     @DisplayName("findBySku: when product exists should return the product")
